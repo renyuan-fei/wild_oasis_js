@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import {formatCurrency} from '../../utils/helpers.js';
-import {deleteCabin} from '../../services/apiCabins.js';
+import {formatCurrency, getImageNameFromUrl} from '../../utils/helpers.js';
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 import { deleteCabin as deleteCabinApi } from "../../services/apiCabins";
@@ -35,12 +34,12 @@ const Cabin = styled.div`
 `;
 
 const Price = styled.div`
-    font-family: "Sono";
+    font-family: "Sono",serif;
     font-weight: 600;
 `;
 
 const Discount = styled.div`
-    font-family: "Sono";
+    font-family: "Sono",serif;
     font-weight: 500;
     color: var(--color-green-700);
 `;
@@ -62,7 +61,11 @@ function CabinRow( {cabin} )
     },
     onError: (err) => toast.error(err.message),
   });
+  
+  const imageName = getImageNameFromUrl(image);
 
+  console.log(imageName);
+  
   if ( isDeleting ) return <Spinner/>
 
   return (
@@ -72,7 +75,7 @@ function CabinRow( {cabin} )
         <div>Fits up tp {maxCapacity}</div>
         <Price>{formatCurrency( regularPrice )}</Price>
         <Discount>{formatCurrency( discount )}</Discount>
-        <button onClick={() => deleteCabin(id)}>
+        <button onClick={() => deleteCabin({id, imageName})}>
           Delete
         </button>
       </TableRow>
