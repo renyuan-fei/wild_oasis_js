@@ -43,9 +43,12 @@ export async function createEditCabin(newCabin, id, oldImageName) {
   // check if the image is existing and it's an url
   if (newCabin.image && typeof newCabin.image !== 'string') {
     
+    // imageName = `${Math.random()}-${newCabin.image.name}`
+    //     .replaceAll('/', '')
+    //     .replaceAll(' ', '');
+    
     imageName = `${Math.random()}-${newCabin.image.name}`
-        .replaceAll('/', '')
-        .replaceAll(' ', '');
+        .replaceAll(/[^a-zA-Z0-9-.]/g, '');
     
     imagePath = `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`;
   } else if (!id) {

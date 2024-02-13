@@ -1,8 +1,7 @@
 import Form from '../../ui/Form.jsx';
 import Textarea from '../../ui/Textarea.jsx';
 import Button from '../../ui/Button.jsx';
-import {useMutation, useQueryClient} from '@tanstack/react-query';
-import {createEditCabin} from '../../services/apiCabins.js';
+import {useQueryClient} from '@tanstack/react-query';
 import {useForm} from 'react-hook-form';
 import Spinner from '../../ui/Spinner.jsx';
 import {toast} from 'react-hot-toast';
@@ -10,6 +9,8 @@ import FormRow from '../../ui/FormRow.jsx';
 import Input from '../../ui/Input';
 import FileInput from '../../ui/FileInput.jsx';
 import {getImageNameFromUrl} from '../../utils/helpers.js';
+import {useEditCabin} from './useEditCabin.js';
+import {useCreateCabin} from './useCreateCabin.js';
 
 function CreateCabinForm({cabinToEdit = {}}) {
   const queryClient = useQueryClient();
@@ -24,34 +25,8 @@ function CreateCabinForm({cabinToEdit = {}}) {
     defaultValues: isEditSession ? editValues : {},
   });
   
-  const {isLoading: isCreating, mutate: createCabin} = useMutation({
-    mutationFn: (CabinData) => createEditCabin(CabinData),
-    onSuccess: () =>
-    {
-      toast.success('Cabin created successfully');
-      queryClient.invalidateQueries({queryKey: ['cabins']});
-      reset();
-      
-    }, onError: (err) =>
-    {
-      toast.error(err.message);
-    },
-  });
-  
-  const {isLoading: isEditing, mutate: editCabin} = useMutation({
-    mutationFn: ({newCabinData, id, oldImageName}) => createEditCabin(
-        newCabinData, id, oldImageName),
-    onSuccess: () =>
-    {
-      toast.success('Cabin updated successfully');
-      queryClient.invalidateQueries({queryKey: ['cabins']});
-      // reset();
-      
-    }, onError: (err) =>
-    {
-      toast.error(err.message);
-    },
-  });
+  const {isCreating, createCabin} = useCreateCabin();
+  const {isEditing, editCabin} = useEditCabin();
   
   const isWorking = isCreating || isEditing;
   
@@ -63,18 +38,23 @@ function CreateCabinForm({cabinToEdit = {}}) {
   
   function onSubmit(data) {
     const image = typeof data.image === 'string' ? data.image : data.image[0];
-    console.log(data);
+    
     if (isEditSession) {
-      console.log('edit');
       const imageName = getImageNameFromUrl(editValues.image);
+      
       editCabin({
-        newCabinData: {...data, image},
-        id: editId,
-        oldImageName: imageName,
-      });
+            newCabinData: {...data, image},
+            id: editId,
+            oldImageName: imageName,
+          });
     } else {
-      console.log('create');
-      createCabin({...data, image: image});
+      createCabin({...data, image: image},
+          {
+            onSuccess: (data) =>
+            {
+              reset();
+            },
+          });
     }
   }
   
