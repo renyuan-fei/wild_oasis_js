@@ -4,28 +4,15 @@ import Button from '../../ui/Button.jsx';
 
 export function AddCabin() {
   return (
-      <Modal>
-        <Modal.Open opens='cabin-form'>
-          <Button>Add new cabin</Button>
-        </Modal.Open>
-        <Modal.Window name='cabin-form'>
-          <CreateCabinForm/>
-        </Modal.Window>
-      </Modal>);
+      <div>
+        <Modal>
+          <Modal.Open opens="cabin-form">
+            <Button>Add new cabin</Button>
+          </Modal.Open>
+          <Modal.Window name="cabin-form">
+            <CreateCabinForm/>
+          </Modal.Window>
+        </Modal>
+      </div>
+  );
 }
-
-// export function AddCabin() {
-//   const [showForm, setShowForm] = useState(false);
-//
-//   return (
-//       <>
-//         <Button onClick={() => setShowForm((show) => !show)}>
-//           Add new cabin
-//         </Button>
-//         {showForm &&
-//             <Modal onClose={setShowForm}>
-//               <CreateCabinForm onCloseModel={setShowForm}/>
-//             </Modal>}
-//       </>
-//   );
-// }

@@ -4,9 +4,9 @@ import Spinner from '../../ui/Spinner.jsx';
 import {useState} from 'react';
 import CreateCabinForm from './CreateCabinForm.jsx';
 import {useDeleteCabin} from './useDeleteCabin.js';
-import {HiSquare2Stack} from 'react-icons/hi2';
 import {HiPencil, HiTrash} from 'react-icons/hi';
-import {useCreateCabin} from './useCreateCabin.js';
+import Modal from '../../ui/Modal.jsx';
+import ConfirmDelete from '../../ui/ConfirmDelete.jsx';
 
 const TableRow = styled.div`
     display: grid;
@@ -78,13 +78,31 @@ function CabinRow({cabin}) {
               <span>&mdash;</span>
           )}
           <div>
-            <button onClick={() => setShowForm(!showForm)}>
-              <HiPencil/>
-            </button>
-            <button disabled={isDeleting}
-                    onClick={() => deleteCabin({id, imageName})}>
-              <HiTrash/>
-            </button>
+            <Modal>
+              
+              <Modal.Open opens={'edit'}>
+                <button>
+                  <HiPencil/>
+                </button>
+              </Modal.Open>
+              <Modal.Window name={'edit'}>
+                <CreateCabinForm cabinToEdit={cabin}/>
+              </Modal.Window>
+              
+              <Modal.Open opens={'delete-Confirm'}>
+                <button>
+                  <HiTrash/>
+                </button>
+              </Modal.Open>
+              <Modal.Window name={'delete-Confirm'}>
+                <ConfirmDelete
+                    resourceName={'cabins'}
+                    disabled={isDeleting}
+                    onConfirm={() => deleteCabin({id, imageName})}
+                />
+              </Modal.Window>
+              
+            </Modal>
           </div>
         </TableRow>
         {showForm && <CreateCabinForm cabinToEdit={cabin}/>}
