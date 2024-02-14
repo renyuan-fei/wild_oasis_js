@@ -12,7 +12,7 @@ import {getImageNameFromUrl} from '../../utils/helpers.js';
 import {useEditCabin} from './useEditCabin.js';
 import {useCreateCabin} from './useCreateCabin.js';
 
-function CreateCabinForm({cabinToEdit = {}}) {
+function CreateCabinForm({cabinToEdit = {}, onCloseModal}) {
   const queryClient = useQueryClient();
   
   const {id: editId, ...editValues} = cabinToEdit;
@@ -43,15 +43,22 @@ function CreateCabinForm({cabinToEdit = {}}) {
       const imageName = getImageNameFromUrl(editValues.image);
       
       editCabin({
-            newCabinData: {...data, image},
-            id: editId,
-            oldImageName: imageName,
-          });
+        newCabinData: {...data, image},
+        id: editId,
+        oldImageName: imageName,
+      },{
+        onSuccess: () =>
+        {
+          onCloseModal?.(false);
+        },
+      
+      });
     } else {
       createCabin({...data, image: image},
           {
             onSuccess: (data) =>
             {
+              onCloseModal?.(false);
               reset();
             },
           });
@@ -63,7 +70,7 @@ function CreateCabinForm({cabinToEdit = {}}) {
   }
   
   return (
-      <Form onSubmit={handleSubmit(onSubmit, onError)}>
+      <Form onSubmit={handleSubmit(onSubmit, onError)} type={onCloseModal ? "modal" : "regular"}>
         <FormRow label="Cabin name" error={errors?.name?.message}>
           <Input
               type="text"
@@ -170,7 +177,10 @@ function CreateCabinForm({cabinToEdit = {}}) {
         <FormRow>
           <Button disabled={isWorking}
                   variation="secondary"
-                  type="reset">
+                  type="reset"
+              // onCloseModel is only used to close the modal
+              // so it's safe to call it with false
+                  onClick={() => onCloseModal?.(false)}>
             Cancel
           </Button>
           <Button disabled={isWorking}>
