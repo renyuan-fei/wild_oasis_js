@@ -2,15 +2,17 @@ import styled from 'styled-components';
 import Spinner from '../../ui/Spinner.jsx';
 import CabinRow from './CabinRow.jsx';
 import {useCabins} from './useCabins.js';
+import Table from '../../ui/Table.jsx';
+import Menus from '../../ui/Menus.jsx';
 
-const Table = styled.div`
-    border: 1px solid var(--color-grey-200);
-
-    font-size: 1.4rem;
-    background-color: var(--color-grey-0);
-    border-radius: 7px;
-    overflow: hidden;
-`;
+// const Table = styled.div`
+//     border: 1px solid var(--color-grey-200);
+//
+//     font-size: 1.4rem;
+//     background-color: var(--color-grey-0);
+//     border-radius: 7px;
+//     overflow: hidden;
+// `;
 
 const TableHeader = styled.header`
     display: grid;
@@ -33,20 +35,23 @@ function CabinTable() {
   if (isLoading) return <Spinner/>;
   
   return (
-      <Table role="table">
-        <TableHeader role="row">
-          <div>Cabin</div>
-          <div>Capacity</div>
-          <div>Status</div>
-          <div>Available</div>
-          <div>Booked</div>
-          <div>Action</div>
-        </TableHeader>
-        
-        {cabins.map((cabin) => (
-            <CabinRow key={cabin.id} cabin={cabin}/>
-        ))}
-      </Table>);
+      <Menus>
+        <Table columns={'0.6fr 1.8fr 2.2fr 1fr 1fr 1fr'}>
+          <Table.Header role="row">
+            <div>Cabin</div>
+            <div>Capacity</div>
+            <div>Status</div>
+            <div>Available</div>
+            <div>Booked</div>
+            <div>Action</div>
+          </Table.Header>
+          
+          <Table.Body data={cabins} render={(cabin) => (
+              <CabinRow key={cabin.id} cabin={cabin}/>
+          )}/>
+        </Table>
+      </Menus>
+  );
 }
 
 export default CabinTable;
