@@ -1,22 +1,23 @@
 import styled from 'styled-components';
-
-import BookingDataBox from './BookingDataBox';
-import Row from '../../ui/Row';
-import Heading from '../../ui/Heading';
-import Tag from '../../ui/Tag';
-import ButtonGroup from '../../ui/ButtonGroup';
-import Button from '../../ui/Button';
-import ButtonText from '../../ui/ButtonText';
-
-import {useMoveBack} from '../../hooks/useMoveBack';
 import {useBooking} from './useBooking.js';
-import Spinner from '../../ui/Spinner.jsx';
-import Empty from '../../ui/Empty.jsx';
+import {useDeleteBooking} from './useDeleteBooking.js';
+import {useMoveBack} from '../../hooks/useMoveBack.js';
 import {useNavigate} from 'react-router-dom';
 import {useCheckout} from '../check-in-out/useCheckout.js';
-import {HiArrowUpOnSquare} from 'react-icons/hi2';
-import Modal from '../../ui/Modal.jsx';
+import Spinner from '../../ui/Spinner.jsx';
+import Empty from '../../ui/Empty.jsx';
+import Row from '../../ui/Row.jsx';
+import Heading from '../../ui/Heading.jsx';
+import Tag from '../../ui/Tag.jsx';
+import ButtonText from '../../ui/ButtonText.jsx';
+import BookingDataBox from './BookingDataBox.jsx';
+import ButtonGroup from '../../ui/ButtonGroup.jsx';
+import Button from '../../ui/Button.jsx';
 import ConfirmDelete from '../../ui/ConfirmDelete.jsx';
+import Modal from '../../ui/Modal.jsx';
+import {HiArrowUpOnSquare} from 'react-icons/hi2';
+
+
 
 const HeadingGroup = styled.div`
     display: flex;
