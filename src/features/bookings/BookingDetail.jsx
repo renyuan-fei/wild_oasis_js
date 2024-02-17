@@ -17,8 +17,6 @@ import {useCheckout} from '../check-in-out/useCheckout.js';
 import {HiArrowUpOnSquare} from 'react-icons/hi2';
 import Modal from '../../ui/Modal.jsx';
 import ConfirmDelete from '../../ui/ConfirmDelete.jsx';
-import {deleteBooking} from '../../services/apiBookings.js';
-import {useDeleteBooking} from './useDeleteBooking.js';
 
 const HeadingGroup = styled.div`
     display: flex;
@@ -28,7 +26,7 @@ const HeadingGroup = styled.div`
 
 function BookingDetail() {
   const {booking, isLoading} = useBooking();
-  const { deleteBooking, isDeleting } = useDeleteBooking();
+  const {deleteBooking, isDeleting} = useDeleteBooking();
   const moveBack = useMoveBack();
   const navigate = useNavigate();
   const {checkout, isCheckingOut} = useCheckout();

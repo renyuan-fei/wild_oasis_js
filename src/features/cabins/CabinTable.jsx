@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import Spinner from '../../ui/Spinner.jsx';
 import CabinRow from './CabinRow.jsx';
 import {useCabins} from './useCabins.js';
@@ -8,7 +7,7 @@ import {useSearchParams} from 'react-router-dom';
 
 function CabinTable() {
   const {isLoading, cabins} = useCabins();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   
   if (isLoading) return <Spinner/>;
   
